@@ -1,6 +1,6 @@
 import uvicorn
 from db import tables_check
-from api import app
+from api import app 
 
 
 def main():

@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
-from todolist.models import Task_Model, Task_DB_Model
+
+from todolist.models import Task_DB_Model, Task_Model
 from todolist.repository import TasksRepository
 
 
@@ -24,6 +25,8 @@ class TodoService:
         is_done: Optional[bool] = None,
         create_date: Optional[datetime] = None,
         finish_date: Optional[datetime] = None,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
     ):
         filter = {
             k: v
@@ -36,7 +39,7 @@ class TodoService:
             }.items()
             if v is not None
         }
-        lst = TasksRepository.list(filter)
+        lst = TasksRepository.list(filter, limit=limit, offset=offset)
         res = []
         for item in lst:
             task = Task_DB_Model.model_validate(item)

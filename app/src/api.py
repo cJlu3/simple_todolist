@@ -1,5 +1,4 @@
 from datetime import datetime
-from os import wait
 from typing import List, Optional
 
 from fastapi import FastAPI
@@ -28,6 +27,8 @@ def filtered_list(
     is_done: Optional[bool] = None,
     create_date: Optional[datetime] = None,
     finish_date: Optional[datetime] = None,
+    limit: Optional[int] = None,
+    offset: Optional[int] = None,
 ) -> List[Task_DB_Model]:
     return TodoService.list(
         title=title,
@@ -35,6 +36,8 @@ def filtered_list(
         is_done=is_done,
         create_date=create_date,
         finish_date=finish_date,
+        limit=limit,
+        offset=offset,
     )
 
 

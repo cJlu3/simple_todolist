@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import delete, func, insert, select, update
 
 from db import Session
@@ -21,8 +23,13 @@ class TasksRepository:
         return res
 
     @classmethod
-    def list(cls, filter: dict):
-        query = select(Tasks).filter_by(**filter)
+    def list(
+        cls,
+        filter: dict,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+    ):
+        query = select(Tasks).filter_by(**filter).limit(limit).offset(offset)
         with Session() as session:
             query_res = session.execute(query)
             res = query_res.scalars().all()

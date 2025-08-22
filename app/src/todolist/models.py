@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Optional
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import DateTime, String, func
+
 from pydantic import BaseModel, ConfigDict, Field
+from sqlalchemy import DateTime, String, func
+from sqlalchemy.orm import Mapped, mapped_column
+
 from db import Base
 
 
@@ -54,6 +56,7 @@ class Task_DB_Model(BaseModel):
             created = {self.create_date}\n\
             finish  = {self.finish_date}"
         return line
+
 
 class Task_Model(BaseModel):
     title: str = Field(min_length=1, max_length=200)
