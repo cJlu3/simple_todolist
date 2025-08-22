@@ -10,13 +10,13 @@ app = FastAPI()
 
 
 @app.post("/db/add")
-def add(new_task: Task_Model) -> dict:
+async def add(new_task: Task_Model) -> dict:
     TodoService.add(new_task)
     return {"ok": True, "added data": new_task}
 
 
 @app.get("/db/get")
-def get_by_id(task_id: int) -> Task_DB_Model:
+async def get_by_id(task_id: int) -> Task_DB_Model:
     return TodoService.get(task_id)
 
 

@@ -4,6 +4,7 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from config import settings
 
 db_url = settings.DB_URL
+
 engine = create_engine(db_url)
 Session = sessionmaker(engine)
 
@@ -12,7 +13,7 @@ class Base(DeclarativeBase):
     pass
 
 
-def tables_check():
+async def tables_check():
     insperctor = inspect(engine)
     existing_tables = insperctor.get_table_names()
 

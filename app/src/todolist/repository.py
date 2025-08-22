@@ -8,7 +8,7 @@ from todolist.models import Tasks
 
 class TasksRepository:
     @classmethod
-    def add(cls, values: dict):
+    async def add(cls, values: dict):
         stmt = insert(Tasks).values(**values)
         with Session() as session:
             session.execute(stmt)
