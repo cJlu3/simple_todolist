@@ -1,38 +1,36 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db import Base
+from core import Base
 
 
 class Tasks(Base):
     __tablename__ = "tasks"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str] = mapped_column(String(200), nullable=False)
-    desc: Mapped[Optional[str]] = mapped_column(nullable=True)
-    is_done: Mapped[bool] = mapped_column(nullable=False, default=False)
+    title: Mapped[str | None] = mapped_column(String(200))
+    desc: Mapped[str | None]
+    is_done: Mapped[bool] = mapped_column(default=False)
     create_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=False),
-        nullable=False,
         default=func.now(),
     )
-    finish_date: Mapped[Optional[datetime]] = mapped_column(
+    finish_date: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
-        nullable=True,
+        default=None,
     )
 
 
 class Task_DB_Model(BaseModel):
-    id: Optional[int] = Field(default=None)
+    id: int | None = Field(default=None)
     title: str = Field(min_length=1, max_length=200)
-    desc: Optional[str]
+    desc: str | None
     is_done: bool = Field(default=False)
-    create_date: Optional[datetime] = Field(default=None)
-    finish_date: Optional[datetime] = Field(default=None)
+    create_date: datetime | None = Field(default=None)
+    finish_date: datetime | None = Field(default=None)
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -58,11 +56,11 @@ class Task_DB_Model(BaseModel):
         return line
 
 
-class Task_Model(BaseModel):
+class Task_Schema(BaseModel):
     title: str = Field(min_length=1, max_length=200)
-    desc: Optional[str]
+    desc: str | None
     is_done: bool = Field(default=False)
-    finish_date: Optional[datetime] = Field(default=None)
+    finish_date: datetime | None = Field(default=None, examples=[None])
 
     model_config = ConfigDict(from_attributes=True)
 

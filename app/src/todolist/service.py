@@ -1,24 +1,24 @@
 from datetime import datetime
 from typing import Optional
 
-from todolist.models import Task_DB_Model, Task_Model
+from todolist.models import Task_DB_Model, Task_Schema
 from todolist.repository import TasksRepository
 
 
 class TodoService:
     @classmethod
-    def add(cls, task: Task_Model):
+    async def add(cls, task: Task_Schema):
         task_dict = task.to_dict()
-        TasksRepository.add(task_dict)
+        await TasksRepository.add(task_dict)
 
     @classmethod
-    def get(cls, task_id: int):
-        task = TasksRepository.get(task_id)
+    async def get(cls, task_id: int):
+        task = await TasksRepository.get(task_id)
         res = Task_DB_Model.model_validate(task)
         return res
 
     @classmethod
-    def list(
+    async def list(
         cls,
         title: Optional[str] = None,
         desc: Optional[str] = None,
@@ -39,7 +39,7 @@ class TodoService:
             }.items()
             if v is not None
         }
-        lst = TasksRepository.list(filter, limit=limit, offset=offset)
+        lst = await TasksRepository.list(filter, limit=limit, offset=offset)
         res = []
         for item in lst:
             task = Task_DB_Model.model_validate(item)
@@ -47,23 +47,23 @@ class TodoService:
         return res
 
     @classmethod
-    def count(cls):
-        res = TasksRepository.count()
+    async def count(cls):
+        res = await TasksRepository.count()
         return res
 
     @classmethod
-    def update(cls, task_id: int, task: Task_Model):
+    async def update(cls, task_id: int, task: Task_Schema):
         values = task.to_dict()
-        TasksRepository.update(task_id, values)
+        await TasksRepository.update(task_id, values)
 
     @classmethod
-    def finish(cls, task_id: int):
-        TasksRepository.finish(task_id)
+    async def finish(cls, task_id: int):
+        await TasksRepository.finish(task_id)
 
     @classmethod
-    def delete(cls, task_id):
-        TasksRepository.delete(task_id)
+    async def delete(cls, task_id):
+        await TasksRepository.delete(task_id)
 
     @classmethod
-    def delete_all(cls):
-        TasksRepository.delete_all()
+    async def delete_all(cls):
+        await TasksRepository.delete_all()
